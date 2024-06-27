@@ -23,8 +23,8 @@ public class Test {
         Test test = new Test();
         test.generate();
     }
-    public PdfPCell createRightAlignedCell(String content, FundDetailsPDFGenerator event) {
-        Phrase phrase = new Phrase(content, event.getParagrapyFont());
+    public PdfPCell createRightAlignedCell(String content, Font font) {
+        Phrase phrase = new Phrase(content, font);
         PdfPCell cell = new PdfPCell(phrase);
         cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
         return cell;
@@ -38,12 +38,12 @@ public class Test {
     }
     public void generate() {
         // 指定文件保存的路径
-        String filePath = System.getProperty("java.io.tmpdir") + "资金明细详情.pdf";
+        String filePath = System.getProperty("java.io.tmpdir") + "资金明细详情1.pdf";
         float marginPoint = cmToPoints(2.0f);
         Document document = new Document(PageSize.A4.rotate(), marginPoint, marginPoint, marginPoint, marginPoint + footHeight);
         try {
             PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(filePath));
-            // 在打开文档之前设置页脚事件
+
             BaseFont baseFont = BaseFont.createFont("STSong-Light", "UniGB-UCS2-H", BaseFont.EMBEDDED);
             Font titleFont = new Font(baseFont, 20);
             Font paragrapyFont = new Font(baseFont, 10);
@@ -52,26 +52,24 @@ public class Test {
             table.setWidthPercentage(100);// 表格宽度为页面宽度的 100%
             table.setSpacingBefore(10f);// 表格前的间距
             addTableHeader(table, paragrapyFont);
-            FundDetailsPDFGenerator event = new FundDetailsPDFGenerator(baseFont, titleFont, paragrapyFont, table, footHeight);
+            // 在打开文档之前设置页脚事件
+            FundDetailsPDFGenerator event = new FundDetailsPDFGenerator(baseFont, titleFont, paragrapyFont, footHeight);
             writer.setPageEvent(event);
             document.open();
 
             // 添加标题
-            Paragraph title = new Paragraph("资金明细详情", event.getTitleFont());
+            Paragraph title = new Paragraph("资金明细详情", titleFont);
             title.setAlignment(Element.ALIGN_CENTER);
             document.add(title);
 
             // 添加查询日期和查询人
-            document.add(new Paragraph("查询日期：" + new Date().toString(), event.getParagrapyFont()));
-            document.add(new Paragraph("查询人：小红", event.getParagrapyFont()));
+            document.add(new Paragraph("查询日期：" + new Date().toString(), paragrapyFont));
+            document.add(new Paragraph("查询人：小红", paragrapyFont));
 
             // 设置余额列的默认单元格样式为右对齐
             PdfPCell defaultBalanceCell = new PdfPCell();
             defaultBalanceCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
 //            table.getDefaultCell().setHorizontalAlignment(Element.ALIGN_RIGHT);
-
-            // 添加表头
-            addTableHeader(table, paragrapyFont);
 
             // 填充表格数据
             List<FundDetail> fundDetailsList = getFundDetailsList(); // 获取资金明细实体的列表
@@ -82,7 +80,7 @@ public class Test {
                 table.addCell(this.createWrappingCell(fundDetail.getPayeeAccount(), paragrapyFont));
 
                 // 使用默认样式添加余额单元格
-                PdfPCell cell = this.createRightAlignedCell(String.valueOf(fundDetail.getBalance()), event);
+                PdfPCell cell = this.createRightAlignedCell(String.valueOf(fundDetail.getBalance()), paragrapyFont);
                 table.addCell(cell);
             }
 
