@@ -53,7 +53,8 @@ public class Test {
             table.setSpacingBefore(10f);// 表格前的间距
             addTableHeader(table, paragrapyFont);
             // 在打开文档之前设置页脚事件
-            FundDetailsPDFGenerator event = new FundDetailsPDFGenerator(baseFont, titleFont, paragrapyFont, footHeight);
+            String footStr = "此账单如被修改，不具有法律效力。聂建洲聂建洲聂建洲聂建洲111111111111聂建洲聂建洲聂建洲222222222聂建洲聂建洲聂建洲33333333就斤斤计较经济斤斤计较男男女女男男女女男男女女男女";
+            FundDetailsPDFGenerator event = new FundDetailsPDFGenerator(baseFont, titleFont, paragrapyFont, footHeight, footStr);
             writer.setPageEvent(event);
             document.open();
 

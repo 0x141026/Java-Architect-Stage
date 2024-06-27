@@ -18,13 +18,15 @@ public class FundDetailsPDFGenerator extends PdfPageEventHelper {
     private PdfTemplate total;
     private float footHeight;
     private final float offSetY = 3; //canva绘制后的图形
+    private String footStr;
 
-    public FundDetailsPDFGenerator(BaseFont baseFont, Font titleFont, Font paragraphFont, float footHeight) {
+    public FundDetailsPDFGenerator(BaseFont baseFont, Font titleFont, Font paragraphFont, float footHeight, String footStr) {
         // 初始化字体
         this.baseFont = baseFont;
         this.titleFont = titleFont;
         this.paragraphFont = paragraphFont;
         this.footHeight = footHeight;
+        this.footStr = footStr;
 
         // 创建表格并设置默认单元格样式
         this.table = new PdfPTable(5);// 5列的表格
@@ -65,8 +67,7 @@ public class FundDetailsPDFGenerator extends PdfPageEventHelper {
 
         ColumnText footerText = new ColumnText(cb);
         footerText.setSimpleColumn(left, bottom, right, top);
-        footerText.addElement(new Paragraph("此账单如被修改，不具有法律效力。聂建洲聂建洲聂建洲聂建洲111111111111聂建洲聂建洲聂建洲222222222聂建洲聂建洲聂建洲33333333就斤斤计较经济斤斤计较男男女女男男女女男男女女男女"
-                , paragraphFont));
+        footerText.addElement(new Paragraph(footStr, paragraphFont));
         footerText.go();
         // 添加页码
         String pageNumberString = String.format("页码 %d / ", writer.getPageNumber());
@@ -114,66 +115,4 @@ public class FundDetailsPDFGenerator extends PdfPageEventHelper {
         cell.setNoWrap(false);
         return cell;
     }
-//    public static void main(String[] args) {
-//        FundDetailsPDFGenerator fundDetailsPDFGenerator = new FundDetailsPDFGenerator();
-//        fundDetailsPDFGenerator.generate();
-//    }
-//    public void generate() {
-//        // 指定文件保存的路径
-//        String filePath = System.getProperty("java.io.tmpdir") + "资金明细详情.pdf";
-//        float marginPoint = cmToPoints(2.0f);
-//        Document document = new Document(PageSize.A4.rotate(), marginPoint, marginPoint, marginPoint, marginPoint + footHeight);
-//        try {
-//            PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(filePath));
-//            // 在打开文档之前设置页脚事件
-//            FundDetailsPDFGenerator event = new FundDetailsPDFGenerator();
-//            writer.setPageEvent(event);
-//            document.open();
-//
-//            // 添加标题
-//            Paragraph title = new Paragraph("资金明细详情", titleFont);
-//            title.setAlignment(Element.ALIGN_CENTER);
-//            document.add(title);
-//
-//            // 添加查询日期和查询人
-//            document.add(new Paragraph("查询日期：" + new Date().toString(), paragrapyFont));
-//            document.add(new Paragraph("查询人：小红", paragrapyFont));
-//
-//            // 创建表格并设置默认单元格样式
-////            PdfPTable table = new PdfPTable(5); // 5 列的表格
-////            table.setWidthPercentage(100); // 表格宽度为页面宽度的 100%
-////            table.setSpacingBefore(10f); // 表格前的间距
-//
-//            // 设置余额列的默认单元格样式为右对齐
-//            PdfPCell defaultBalanceCell = new PdfPCell();
-//            defaultBalanceCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
-////            table.getDefaultCell().setHorizontalAlignment(Element.ALIGN_RIGHT);
-//
-//            // 添加表头
-//            addTableHeader(table);
-//
-//            // 填充表格数据
-//            List<FundDetail> fundDetailsList = getFundDetailsList(); // 获取资金明细实体的列表
-//            for (FundDetail fundDetail : fundDetailsList) {
-//                table.addCell(this.createWrappingCell(fundDetail.getTransferDate()));
-//                table.addCell(this.createWrappingCell(fundDetail.getPayer()));
-//                table.addCell(this.createWrappingCell(fundDetail.getPayerAccount()));
-//                table.addCell(this.createWrappingCell(fundDetail.getPayeeAccount()));
-//
-//                // 使用默认样式添加余额单元格
-//                PdfPCell cell = this.createRightAlignedCell(String.valueOf(fundDetail.getBalance()));
-//                table.addCell(cell);
-//            }
-//
-//            document.add(table);
-//            document.close();
-//            writer.close();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
-
-
-
-
 }
