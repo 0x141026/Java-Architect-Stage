@@ -1,4 +1,4 @@
-package com.njz;
+package com.njz.utils;
 
 import com.njz.bean.GroupMember;
 import com.njz.bean.Njz;
