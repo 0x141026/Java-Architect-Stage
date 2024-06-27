@@ -28,38 +28,6 @@ public class FundDetailsPDFGenerator extends PdfPageEventHelper{
         this.footHeight = footHeight;
     }
 
-    public Font getParagrapyFont() {
-        return paragrapyFont;
-    }
-
-    public void setParagrapyFont(Font paragrapyFont) {
-        this.paragrapyFont = paragrapyFont;
-    }
-
-    public Font getTitleFont() {
-        return titleFont;
-    }
-
-    public void setTitleFont(Font titleFont) {
-        this.titleFont = titleFont;
-    }
-
-    public BaseFont getBaseFont() {
-        return baseFont;
-    }
-
-    public void setBaseFont(BaseFont baseFont) {
-        this.baseFont = baseFont;
-    }
-
-    public PdfPTable getTable() {
-        return table;
-    }
-
-    public void setTable(PdfPTable table) {
-        this.table = table;
-    }
-
     /**
      * 在文档打开时调用。这是在写入内容之前第一次调用Document.open()时触发的。
      * 可以用于初始化全局资源，如全局字体或样式设置。
@@ -118,28 +86,29 @@ public class FundDetailsPDFGenerator extends PdfPageEventHelper{
         total.showText(totalPageString);
         total.endText();
     }
-    private void addTableHeader(PdfPTable table) {
-        PdfPCell cell = this.createWrappingCell("转账日期");
-        PdfPCell cell1 = this.createWrappingCell("转出人");
-        PdfPCell cell2 = this.createWrappingCell("转出账号");
-        PdfPCell cell3 = this.createWrappingCell("转入账号");
-        table.addCell(cell);
-        table.addCell(cell1);
-        table.addCell(cell2);
-        table.addCell(cell3);
-
-        // 余额表头右对齐
-        PdfPCell balanceHeader = this.createWrappingCell("余额");
-        balanceHeader.setHorizontalAlignment(Element.ALIGN_RIGHT);
-        table.addCell(balanceHeader);
-    }
-
-    private PdfPCell createWrappingCell(String content) {
-        Phrase phrase = new Phrase(content, paragrapyFont);
-        PdfPCell cell = new PdfPCell(phrase);
-        cell.setNoWrap(false);
-        return cell;
-    }
+//    private void addTableHeader(PdfPTable table, Font font) {
+//        PdfPCell cell = this.createWrappingCell("转账日期", font);
+//        PdfPCell cell1 = this.createWrappingCell("转出人", font);
+//        PdfPCell cell2 = this.createWrappingCell("转出账号", font);
+//        PdfPCell cell3 = this.createWrappingCell("转入账号", font);
+//        table.addCell(cell);
+//        table.addCell(cell1);
+//        table.addCell(cell2);
+//        table.addCell(cell3);
+//
+//        // 余额表头右对齐
+//        PdfPCell balanceHeader = this.createWrappingCell("余额", font);
+//        balanceHeader.setHorizontalAlignment(Element.ALIGN_RIGHT);
+//        table.addCell(balanceHeader);
+//    }
+//
+//    // 辅助方法：创建一个自动换行的 PdfPCell
+//    private PdfPCell createWrappingCell(String content, Font font) {
+//        Phrase phrase = new Phrase(content, font);
+//        PdfPCell cell = new PdfPCell(phrase);
+//        cell.setNoWrap(false);
+//        return cell;
+//    }
 //    public static void main(String[] args) {
 //        FundDetailsPDFGenerator fundDetailsPDFGenerator = new FundDetailsPDFGenerator();
 //        fundDetailsPDFGenerator.generate();
