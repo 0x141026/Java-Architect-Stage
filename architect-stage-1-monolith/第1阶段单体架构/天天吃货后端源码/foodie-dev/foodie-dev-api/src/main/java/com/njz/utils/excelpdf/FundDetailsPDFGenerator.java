@@ -77,15 +77,12 @@ public class FundDetailsPDFGenerator extends PdfPageEventHelper {
         // 添加页码
         String pageNumberString = String.format("页码 %d / ", writer.getPageNumber());
         Phrase pageNumberPhrase = new Phrase(pageNumberString, paragraphFont);
-        float center = (document.right() - document.left()) / 2 + document.leftMargin();
-        ColumnText.showTextAligned(cb, Element.ALIGN_RIGHT,
-                pageNumberPhrase,
-                center,
-                document.bottom() - paragraphFont.getSize() - footHeight,
-                0);
+        float centerPosition = (document.right() - document.left()) / 2 + document.leftMargin();
+        ColumnText.showTextAligned(cb, Element.ALIGN_RIGHT, pageNumberPhrase,
+                centerPosition, document.bottom() - paragraphFont.getSize() - footHeight, 0);
 
         // 添加总页数画布到指定位置
-        cb.addTemplate(totalPage, center, document.bottom() - paragraphFont.getSize() - offSetY - footHeight);
+        cb.addTemplate(totalPage, centerPosition, document.bottom() - paragraphFont.getSize() - offSetY - footHeight);
     }
 
     @Override
