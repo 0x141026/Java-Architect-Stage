@@ -5,11 +5,11 @@ import com.lowagie.text.pdf.BaseFont;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
-import com.njz.utils.excelpdf.dto.FundDetail;
+import com.njz.utils.excelpdf.dto.FundCapitalDetail;
 
 import java.io.FileOutputStream;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Arrays;
 import java.util.List;
 
 public class Test {
@@ -21,7 +21,7 @@ public class Test {
 
     public static void main(String[] args) {
         Test test = new Test();
-        test.generate();
+        test.generateDetail();
     }
     public PdfPCell createRightAlignedCell(String content, Font font) {
         Phrase phrase = new Phrase(content, font);
@@ -36,7 +36,7 @@ public class Test {
         cell.setNoWrap(false);
         return cell;
     }
-    public void generate() {
+    public void generateDetail() {
         // 指定文件保存的路径
         String filePath = System.getProperty("java.io.tmpdir") + "资金明细详情1.pdf";
         float marginPoint = cmToPoints(2.0f);
@@ -46,46 +46,42 @@ public class Test {
 
             BaseFont baseFont = BaseFont.createFont("STSong-Light", "UniGB-UCS2-H", BaseFont.EMBEDDED);
             Font titleFont = new Font(baseFont, 20);
-            Font paragrapyFont = new Font(baseFont, 10);
+            Font paragraphFont = new Font(baseFont, 10);
+
+
+            List<String> headers = Arrays.asList("入账时间", "入账金额", "出账金额", "余额", "对方账号", "对方户名", "对方开户行名", "摘要", "附言");
+            List<Integer> dataAlignments = Arrays.asList(Element.ALIGN_CENTER, Element.ALIGN_RIGHT, Element.ALIGN_RIGHT,
+                    Element.ALIGN_RIGHT, Element.ALIGN_CENTER, Element.ALIGN_CENTER,
+                    Element.ALIGN_CENTER, Element.ALIGN_CENTER, Element.ALIGN_CENTER);
+
             // 创建表格并设置默认单元格样式
-            PdfPTable table = new PdfPTable(5);// 5列的表格
+            PdfPTable table = new PdfPTable(headers.size());// 根据表头列数量床脚table
             table.setWidthPercentage(100);// 表格宽度为页面宽度的 100%
             table.setSpacingBefore(10f);// 表格前的间距
-            addTableHeader(table, paragrapyFont);
+            OpenpdfUtils.addTableHeader(table, paragraphFont, headers, Element.ALIGN_CENTER, Element.ALIGN_CENTER);
             // 在打开文档之前设置页脚事件
-            String footStr = "此账单如被修改，不具有法律效力。聂建洲聂建洲聂建洲聂建洲111111111111聂建洲聂建洲聂建洲222222222聂建洲聂建洲聂建洲33333333就斤斤计较经济斤斤计较男男女女男男女女男男女女男女";
-            FundDetailsPDFGenerator event = new FundDetailsPDFGenerator(baseFont, titleFont, paragrapyFont, footHeight, footStr);
+            String footStr = "重要提示：本明细仅限于查询账户交易流水使用，在跨行退出、日终冲帐等特殊情况下存在后续变动可能，若与实际交易不符，以银行对账单为准。文件下载后请妥善保管，如若被伪造、变造、篡改，不具有发力效力。";
+            FundDetailsPDFGenerator event = new FundDetailsPDFGenerator(baseFont, titleFont, paragraphFont, footHeight, footStr);
             writer.setPageEvent(event);
             document.open();
 
             // 添加标题
-            Paragraph title = new Paragraph("资金明细详情", titleFont);
+            Paragraph title = new Paragraph("中国工商银行账户明细清单", titleFont);
             title.setAlignment(Element.ALIGN_CENTER);
             document.add(title);
 
-            // 添加查询日期和查询人
-            document.add(new Paragraph("查询日期：" + new Date().toString(), paragrapyFont));
-            document.add(new Paragraph("查询人：小红", paragrapyFont));
-
-            // 设置余额列的默认单元格样式为右对齐
-            PdfPCell defaultBalanceCell = new PdfPCell();
-            defaultBalanceCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
-//            table.getDefaultCell().setHorizontalAlignment(Element.ALIGN_RIGHT);
-
+            // 添加表格上面部分文字
+            List<String> textList = Arrays.asList(
+                    "组合名称：南方宝元",
+                    "组合账号：22222222222222222",
+                    "账户期初余额：100",
+                    "查询时间：20220101-20221010",
+                    "金额币种：元"
+            );
+            OpenpdfUtils.addTextBeforeTable(document, textList, paragraphFont);
             // 填充表格数据
-            List<FundDetail> fundDetailsList = getFundDetailsList(); // 获取资金明细实体的列表
-            for (FundDetail fundDetail : fundDetailsList) {
-                table.addCell(this.createWrappingCell(fundDetail.getTransferDate(), paragrapyFont));
-                table.addCell(this.createWrappingCell(fundDetail.getPayer(), paragrapyFont));
-                table.addCell(this.createWrappingCell(fundDetail.getPayerAccount(), paragrapyFont));
-                table.addCell(this.createWrappingCell(fundDetail.getPayeeAccount(), paragrapyFont));
-
-                // 使用默认样式添加余额单元格
-                PdfPCell cell = this.createRightAlignedCell(String.valueOf(fundDetail.getBalance()), paragrapyFont);
-                table.addCell(cell);
-            }
-
-            document.add(table);
+            List<FundCapitalDetail> fundDetailsList = getFundDetailsList(); // 获取资金明细实体的列表
+            OpenpdfUtils.addTableData(document, table, paragraphFont, fundDetailsList, dataAlignments, Element.ALIGN_MIDDLE);
             document.close();
             writer.close();
         } catch (Exception e) {
@@ -93,28 +89,14 @@ public class Test {
         }
     }
 
-    private void addTableHeader(PdfPTable table, Font font) {
-        PdfPCell cell = this.createWrappingCell("转账日期", font);
-        PdfPCell cell1 = this.createWrappingCell("转出人", font);
-        PdfPCell cell2 = this.createWrappingCell("转出账号", font);
-        PdfPCell cell3 = this.createWrappingCell("转入账号", font);
-        table.addCell(cell);
-        table.addCell(cell1);
-        table.addCell(cell2);
-        table.addCell(cell3);
-
-        // 余额表头右对齐
-        PdfPCell balanceHeader = this.createWrappingCell("余额", font);
-        balanceHeader.setHorizontalAlignment(Element.ALIGN_RIGHT);
-        table.addCell(balanceHeader);
-    }
-
-    private static List<FundDetail> getFundDetailsList() {
+    private static List<FundCapitalDetail> getFundDetailsList() {
         // 这里应该是从数据库或其他数据源获取资金明细实体的列表
         // 返回填充好的资金明细实体列表
-        List<FundDetail> fundDetailList = new ArrayList<FundDetail>();
+        List<FundCapitalDetail> fundDetailList = new ArrayList<FundCapitalDetail>();
         for(int i = 0; i < 100; ++i) {
-            FundDetail fundDetail = new FundDetail("2024010" + i, "付款人" + i, "" + i, "收款人账号" + i, 100 + i);
+            FundCapitalDetail fundDetail = new FundCapitalDetail("2024010" + i, "1000000" + i, "2000000" + i,
+                    "5000" + i, "0000000000" + i, "对方账户名" + i,
+                    "对方开户行名-测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试" + i, "摘要" + i, "附言" + i);
             fundDetailList.add(fundDetail);
         }
         return fundDetailList; // 示例代码，需要替换为实际的数据获取逻辑

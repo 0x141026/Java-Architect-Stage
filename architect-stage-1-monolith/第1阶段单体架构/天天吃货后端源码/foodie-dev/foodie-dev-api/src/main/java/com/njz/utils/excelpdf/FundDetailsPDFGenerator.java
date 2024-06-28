@@ -2,22 +2,24 @@ package com.njz.utils.excelpdf;
 
 import com.lowagie.text.*;
 import com.lowagie.text.pdf.*;
-import com.njz.utils.excelpdf.dto.FundDetail;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
+import java.util.Arrays;
 import java.util.List;
 
 public class FundDetailsPDFGenerator extends PdfPageEventHelper {
+    private final float offSetY = 3; //canva绘制后的图形
     private Font paragraphFont;
     private Font titleFont;
     private BaseFont baseFont;
     private PdfPTable table;
-    private PdfTemplate total;
+    private PdfTemplate totalPage;
+    /**
+     * 页脚的高度
+     */
     private float footHeight;
-    private final float offSetY = 3; //canva绘制后的图形
+    /**
+     * 页脚的文字
+     */
     private String footStr;
 
     public FundDetailsPDFGenerator(BaseFont baseFont, Font titleFont, Font paragraphFont, float footHeight, String footStr) {
@@ -27,12 +29,15 @@ public class FundDetailsPDFGenerator extends PdfPageEventHelper {
         this.paragraphFont = paragraphFont;
         this.footHeight = footHeight;
         this.footStr = footStr;
-
+        List<String> headers = Arrays.asList("入账时间", "入账金额", "出账金额", "余额", "对方账号", "对方户名", "对方开户行名", "摘要", "附言");
+        List<Integer> alignments = Arrays.asList(Element.ALIGN_CENTER, Element.ALIGN_RIGHT, Element.ALIGN_RIGHT,
+                Element.ALIGN_RIGHT, Element.ALIGN_CENTER, Element.ALIGN_CENTER,
+                Element.ALIGN_CENTER, Element.ALIGN_CENTER, Element.ALIGN_CENTER);
         // 创建表格并设置默认单元格样式
-        this.table = new PdfPTable(5);// 5列的表格
+        this.table = new PdfPTable(headers.size());// 5列的表格
         table.setWidthPercentage(100);// 表格宽度为页面宽度的 100%
         table.setSpacingBefore(10f);// 表格前的间距
-        addTableHeader(table, paragraphFont);
+        OpenpdfUtils.addTableHeader(table, paragraphFont, headers, Element.ALIGN_CENTER, Element.ALIGN_CENTER);
     }
 
     /**
@@ -44,7 +49,7 @@ public class FundDetailsPDFGenerator extends PdfPageEventHelper {
     @Override
     public void onOpenDocument(PdfWriter writer, Document document) {
         // 文档打开时创建总页数模板
-        total = writer.getDirectContent().createTemplate(60, 18);
+        totalPage = writer.getDirectContent().createTemplate(60, 18);
     }
     @Override
     public void onStartPage(PdfWriter writer, Document document) {
@@ -79,40 +84,17 @@ public class FundDetailsPDFGenerator extends PdfPageEventHelper {
                 document.bottom() - paragraphFont.getSize() - footHeight,
                 0);
 
-        cb.addTemplate(total, center, document.bottom() - paragraphFont.getSize() - offSetY - footHeight);
+        cb.addTemplate(totalPage, center, document.bottom() - paragraphFont.getSize() - offSetY - footHeight);
     }
 
     @Override
     public void onCloseDocument(PdfWriter writer, Document document) {
         // 文档关闭时调用，设置总页数
-        total.beginText();
-        total.setFontAndSize(baseFont, paragraphFont.getSize());
-        total.setTextMatrix(0, offSetY);
+        totalPage.beginText();
+        totalPage.setFontAndSize(baseFont, paragraphFont.getSize());
+        totalPage.setTextMatrix(0, offSetY);
         String totalPageString = "共" + (writer.getPageNumber() - 1) + "页";
-        total.showText(totalPageString);
-        total.endText();
-    }
-    private void addTableHeader(PdfPTable table, Font font) {
-        PdfPCell cell = this.createWrappingCell("转账日期", font);
-        PdfPCell cell1 = this.createWrappingCell("转出人", font);
-        PdfPCell cell2 = this.createWrappingCell("转出账号", font);
-        PdfPCell cell3 = this.createWrappingCell("转入账号", font);
-        table.addCell(cell);
-        table.addCell(cell1);
-        table.addCell(cell2);
-        table.addCell(cell3);
-
-        // 余额表头右对齐
-        PdfPCell balanceHeader = this.createWrappingCell("余额", font);
-        balanceHeader.setHorizontalAlignment(Element.ALIGN_RIGHT);
-        table.addCell(balanceHeader);
-    }
-
-    // 辅助方法：创建一个自动换行的 PdfPCell
-    private PdfPCell createWrappingCell(String content, Font font) {
-        Phrase phrase = new Phrase(content, font);
-        PdfPCell cell = new PdfPCell(phrase);
-        cell.setNoWrap(false);
-        return cell;
+        totalPage.showText(totalPageString);
+        totalPage.endText();
     }
 }
