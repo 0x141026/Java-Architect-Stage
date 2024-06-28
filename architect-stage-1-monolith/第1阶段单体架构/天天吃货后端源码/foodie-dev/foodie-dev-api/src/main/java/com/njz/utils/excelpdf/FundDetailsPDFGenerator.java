@@ -84,12 +84,13 @@ public class FundDetailsPDFGenerator extends PdfPageEventHelper {
                 document.bottom() - paragraphFont.getSize() - footHeight,
                 0);
 
+        // 添加总页数画布到指定位置
         cb.addTemplate(totalPage, center, document.bottom() - paragraphFont.getSize() - offSetY - footHeight);
     }
 
     @Override
     public void onCloseDocument(PdfWriter writer, Document document) {
-        // 文档关闭时调用，设置总页数
+        // 文档关闭时调用，显示总页数
         totalPage.beginText();
         totalPage.setFontAndSize(baseFont, paragraphFont.getSize());
         totalPage.setTextMatrix(0, offSetY);
