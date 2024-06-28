@@ -3,6 +3,7 @@ package com.njz.utils.excelpdf;
 import com.lowagie.text.*;
 import com.lowagie.text.pdf.*;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -13,6 +14,7 @@ public class FundDetailsPDFGenerator extends PdfPageEventHelper {
     private BaseFont baseFont;
     private PdfPTable table;
     private PdfTemplate totalPage;
+    private String sealPath;
     /**
      * 页脚的高度
      */
@@ -20,15 +22,16 @@ public class FundDetailsPDFGenerator extends PdfPageEventHelper {
     /**
      * 页脚的文字
      */
-    private String footStr;
+    private String footText;
 
-    public FundDetailsPDFGenerator(BaseFont baseFont, Font titleFont, Font paragraphFont, float footHeight, String footStr) {
+    public FundDetailsPDFGenerator(BaseFont baseFont, Font titleFont, Font paragraphFont, float footHeight, String footText, String sealPath) {
         // 初始化字体
         this.baseFont = baseFont;
         this.titleFont = titleFont;
         this.paragraphFont = paragraphFont;
         this.footHeight = footHeight;
-        this.footStr = footStr;
+        this.footText = footText;
+        this.sealPath = sealPath;
         List<String> headers = Arrays.asList("入账时间", "入账金额", "出账金额", "余额", "对方账号", "对方户名", "对方开户行名", "摘要", "附言");
         List<Integer> alignments = Arrays.asList(Element.ALIGN_CENTER, Element.ALIGN_RIGHT, Element.ALIGN_RIGHT,
                 Element.ALIGN_RIGHT, Element.ALIGN_CENTER, Element.ALIGN_CENTER,
@@ -58,6 +61,7 @@ public class FundDetailsPDFGenerator extends PdfPageEventHelper {
             document.add(table);
         }
     }
+
     @Override
     public void onEndPage(PdfWriter writer, Document document) {
         // 每页结束时调用，添加页脚
@@ -72,7 +76,7 @@ public class FundDetailsPDFGenerator extends PdfPageEventHelper {
 
         ColumnText footerText = new ColumnText(cb);
         footerText.setSimpleColumn(left, bottom, right, top);
-        footerText.addElement(new Paragraph(footStr, paragraphFont));
+        footerText.addElement(new Paragraph(footText, paragraphFont));
         footerText.go();
         // 添加页码
         String pageNumberString = String.format("页码 %d / ", writer.getPageNumber());
@@ -83,6 +87,12 @@ public class FundDetailsPDFGenerator extends PdfPageEventHelper {
 
         // 添加总页数画布到指定位置
         cb.addTemplate(totalPage, centerPosition, document.bottom() - paragraphFont.getSize() - offSetY - footHeight);
+
+        try {
+            OpenpdfUtils.sealOnPdf(writer, document, sealPath);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

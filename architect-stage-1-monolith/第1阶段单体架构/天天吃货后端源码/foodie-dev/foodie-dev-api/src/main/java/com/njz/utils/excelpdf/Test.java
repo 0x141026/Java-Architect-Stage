@@ -21,6 +21,8 @@ public class Test {
     public void generateDetail() {
         // 指定文件保存的路径
         String filePath = System.getProperty("java.io.tmpdir") + "资金明细详情1.pdf";
+        String sealPicPath = System.getProperty("java.io.tmpdir") + "seal.png";
+
         float marginPoint = OpenpdfUtils.cmToPoints(2.0f);
         Document document = new Document(PageSize.A4.rotate(), marginPoint, marginPoint, marginPoint, marginPoint + footHeight);
         try {
@@ -36,7 +38,7 @@ public class Test {
 
             // 必须要在打开文档之前设置事件
             String footStr = "重要提示：本明细仅限于查询账户交易流水使用，在跨行退出、日终冲帐等特殊情况下存在后续变动可能，若与实际交易不符，以银行对账单为准。文件下载后请妥善保管，如若被伪造、变造、篡改，不具有发力效力。";
-            FundDetailsPDFGenerator event = new FundDetailsPDFGenerator(baseFont, titleFont, paragraphFont, footHeight, footStr);
+            FundDetailsPDFGenerator event = new FundDetailsPDFGenerator(baseFont, titleFont, paragraphFont, footHeight, footStr, sealPicPath);
             writer.setPageEvent(event);
             document.open();
 

@@ -1,15 +1,29 @@
 package com.njz.utils.excelpdf;
 
-import com.lowagie.text.Document;
-import com.lowagie.text.Font;
-import com.lowagie.text.Paragraph;
+import com.lowagie.text.*;
+import com.lowagie.text.pdf.PdfContentByte;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
+import com.lowagie.text.pdf.PdfWriter;
 import com.njz.utils.excelpdf.dto.FundCapitalDetail;
 
+import java.io.IOException;
 import java.util.List;
 
 public class OpenpdfUtils {
+
+    public static void sealOnPdf(PdfWriter writer, Document document, String sealPath) throws IOException {
+        Image image = Image.getInstance(sealPath);
+
+        Rectangle pageSize = document.getPageSize();
+        image.scaleAbsolute(120, 120);
+        float x = document.leftMargin();
+        // x、y是图片左下角在文档中的位置
+        image.setAbsolutePosition(x - 40, pageSize.getHeight() - image.getScaledHeight() - document.topMargin());
+        PdfContentByte content = writer.getDirectContentUnder();
+        // 添加图片
+        content.addImage(image);
+    }
     /**
      * 在第一页生成表格之前依次插入段落说明文字
      * @param document
