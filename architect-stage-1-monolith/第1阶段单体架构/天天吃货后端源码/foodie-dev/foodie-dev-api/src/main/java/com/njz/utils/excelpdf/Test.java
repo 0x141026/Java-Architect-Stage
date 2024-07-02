@@ -7,6 +7,7 @@ import com.njz.utils.excelpdf.dto.FundCapitalDetail;
 import com.njz.utils.excelpdf.table.CustomedPdfTable;
 import com.njz.utils.excelpdf.table.PdfTableData;
 import com.njz.utils.excelpdf.table.PdfTableHead;
+import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -27,7 +28,18 @@ public class Test {
     }
     public void generateDetail() {
         // 指定文件保存的路径
-        String filePath = System.getProperty("java.io.tmpdir") + "资金明细详情1.pdf";
+        String directoryPath = System.getProperty("java.io.tmpdir") + "capitalDetail_generatedPdf" + System.currentTimeMillis();
+        String filePath = directoryPath + File.separator + "资金明细详情1.pdf";
+
+        File directory = new File(directoryPath);
+        if (!directory.exists()) {
+            boolean created = directory.mkdirs();
+            if (!created) {
+                // Handle error if directory creation fails
+                System.out.println("Failed to create directory: " + directoryPath);
+            }
+        }
+
         String sealPicPath = System.getProperty("java.io.tmpdir") + "seal.png";
 
         float marginPoint = AbstractOpenPdfUtils.cmToPoints(2.0f);
@@ -83,31 +95,37 @@ public class Test {
             CapitalDetailOpenpdfUtils capitalDetailOpenpdfUtils = new CapitalDetailOpenpdfUtils();
             capitalDetailOpenpdfUtils.addPdfTable(table, paragraphFont, customedPdfTable, FundCapitalDetail.class);
 
-            document.add(table);
+            boolean success = document.add(table);
 
             document.close();
             writer.close();
 
         } catch (FileNotFoundException e) {
-            File file = new File(filePath);
-            if (file.exists()) {
-                if (file.delete()) {
-                    System.out.println("File deleted successfully");
-                } else {
-                    System.out.println("Failed to delete the file");
-                }
+            try {
+                FileUtils.deleteDirectory(new File(directoryPath));
+                System.out.println("Deleted directory: " + directoryPath);
+            } catch (IOException e1) {
+                e1.printStackTrace();
+                // 处理删除失败的情况
             }
             throw new RuntimeException(e);
         } catch (IOException e) {
-            File file = new File(filePath);
-            if (file.exists()) {
-                if (file.delete()) {
-                    System.out.println("File deleted successfully");
-                } else {
-                    System.out.println("Failed to delete the file");
-                }
+            try {
+                FileUtils.deleteDirectory(new File(directoryPath));
+                System.out.println("Deleted directory: " + directoryPath);
+            } catch (IOException e1) {
+                e1.printStackTrace();
+                // 处理删除失败的情况
             }
             throw new RuntimeException(e);
+        } finally {
+//            try {
+//                FileUtils.deleteDirectory(new File(directoryPath));
+//                System.out.println("Deleted directory: " + directoryPath);
+//            } catch (IOException e1) {
+//                e1.printStackTrace();
+//                // 处理删除失败的情况
+//            }
         }
     }
 
