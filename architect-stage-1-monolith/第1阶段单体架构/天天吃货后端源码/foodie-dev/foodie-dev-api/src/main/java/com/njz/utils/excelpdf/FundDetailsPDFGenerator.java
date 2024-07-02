@@ -2,8 +2,10 @@ package com.njz.utils.excelpdf;
 
 import com.lowagie.text.*;
 import com.lowagie.text.pdf.*;
+import com.njz.utils.excelpdf.table.PdfTableHead;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -33,6 +35,7 @@ public class FundDetailsPDFGenerator extends PdfPageEventHelper {
         this.footText = footText;
         this.sealPath = sealPath;
         List<String> headers = Arrays.asList("入账时间", "入账金额", "出账金额", "余额", "对方账号", "对方户名", "对方开户行名", "摘要", "附言");
+        PdfTableHead pdfTableHead = new PdfTableHead(headers);
         List<Integer> alignments = Arrays.asList(Element.ALIGN_CENTER, Element.ALIGN_RIGHT, Element.ALIGN_RIGHT,
                 Element.ALIGN_RIGHT, Element.ALIGN_CENTER, Element.ALIGN_CENTER,
                 Element.ALIGN_CENTER, Element.ALIGN_CENTER, Element.ALIGN_CENTER);
@@ -40,7 +43,7 @@ public class FundDetailsPDFGenerator extends PdfPageEventHelper {
         this.table = new PdfPTable(headers.size());// 5列的表格
         table.setWidthPercentage(100);// 表格宽度为页面宽度的 100%
         table.setSpacingBefore(10f);// 表格前的间距
-        OpenpdfUtils.addTableHeader(table, paragraphFont, headers, Element.ALIGN_CENTER, Element.ALIGN_CENTER);
+        AbstractOpenPdfUtils.addTableHeader(table, paragraphFont, pdfTableHead, Element.ALIGN_CENTER, Element.ALIGN_CENTER);
     }
 
     /**
@@ -89,7 +92,7 @@ public class FundDetailsPDFGenerator extends PdfPageEventHelper {
         cb.addTemplate(totalPage, centerPosition, document.bottom() - paragraphFont.getSize() - offSetY - footHeight);
 
         try {
-            OpenpdfUtils.sealOnPdf(writer, document, sealPath);
+            AbstractOpenPdfUtils.sealOnPdf(writer, document, sealPath);
         } catch (IOException e) {
             e.printStackTrace();
         }
