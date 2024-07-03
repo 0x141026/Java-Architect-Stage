@@ -33,7 +33,7 @@ public abstract class AbstractOpenPdfUtils<T> {
      * @param textList
      * @param paragraphFont
      */
-    public static void addTextBeforeTable(Document document, List<String> textList, Font paragraphFont){
+    public static void addTextBeforeTable(Document document, List<String> textList, Font paragraphFont) {
         for (String text : textList) {
             document.add(new Paragraph(text, paragraphFont));
         }

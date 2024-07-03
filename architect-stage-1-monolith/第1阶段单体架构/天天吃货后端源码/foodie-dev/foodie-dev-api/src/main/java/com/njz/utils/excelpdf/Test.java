@@ -46,20 +46,20 @@ public class Test {
         Document document = new Document(PageSize.A4.rotate(), marginPoint, marginPoint, marginPoint, marginPoint + footHeight);
         try(FileOutputStream fos = new FileOutputStream(filePath)) {
             BaseFont baseFont = BaseFont.createFont("STSong-Light", "UniGB-UCS2-H", BaseFont.EMBEDDED);
-            Font titleFont = new Font(baseFont, 20);
             Font paragraphFont = new Font(baseFont, 10);
 
             List<String> headers = Arrays.asList("入账时间", "入账金额", "出账金额", "余额", "对方账号", "对方户名", "对方开户行名", "摘要", "附言");
 
             // 必须要在打开文档之前设置事件
             String footStr = "重要提示：本明细仅限于查询账户交易流水使用，在跨行退出、日终冲帐等特殊情况下存在后续变动可能，若与实际交易不符，以银行对账单为准。文件下载后请妥善保管，如若被伪造、变造、篡改，不具有发力效力。";
-            FundDetailsPDFGenerator event = new FundDetailsPDFGenerator(baseFont, titleFont, paragraphFont, footHeight, footStr, sealPicPath);
+            FundDetailsPDFGenerator event = new FundDetailsPDFGenerator(baseFont, paragraphFont, footHeight, footStr, sealPicPath);
             PdfWriter writer = PdfWriter.getInstance(document, fos);
             writer.setPageEvent(event);
             document.open();
 
             // 添加标题
 //            titleFont.setStyle(Font.BOLD);
+            Font titleFont = new Font(baseFont, 20);
             Paragraph title = new Paragraph("中国工商银行账户明细清单", titleFont);
             title.setAlignment(Element.ALIGN_CENTER);
             document.add(title);

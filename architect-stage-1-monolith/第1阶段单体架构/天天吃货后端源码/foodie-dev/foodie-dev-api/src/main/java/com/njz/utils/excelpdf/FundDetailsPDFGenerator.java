@@ -10,7 +10,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class FundDetailsPDFGenerator extends PdfPageEventHelper {
-    private final float offSetY = 3; //canva绘制后的图形
+    private final float totalPageOffSet_Y = 3; //canva绘制后的图形
     private Font paragraphFont;
     private Font titleFont;
     private BaseFont baseFont;
@@ -26,10 +26,9 @@ public class FundDetailsPDFGenerator extends PdfPageEventHelper {
      */
     private String footText;
 
-    public FundDetailsPDFGenerator(BaseFont baseFont, Font titleFont, Font paragraphFont, float footHeight, String footText, String sealPath) {
+    public FundDetailsPDFGenerator(BaseFont baseFont, Font paragraphFont, float footHeight, String footText, String sealPath) {
         // 初始化字体
         this.baseFont = baseFont;
-        this.titleFont = titleFont;
         this.paragraphFont = paragraphFont;
         this.footHeight = footHeight;
         this.footText = footText;
@@ -39,6 +38,7 @@ public class FundDetailsPDFGenerator extends PdfPageEventHelper {
         List<Integer> alignments = Arrays.asList(Element.ALIGN_CENTER, Element.ALIGN_RIGHT, Element.ALIGN_RIGHT,
                 Element.ALIGN_RIGHT, Element.ALIGN_CENTER, Element.ALIGN_CENTER,
                 Element.ALIGN_CENTER, Element.ALIGN_CENTER, Element.ALIGN_CENTER);
+
         // 创建表格并设置默认单元格样式
         this.table = new PdfPTable(headers.size());// 5列的表格
         table.setWidthPercentage(100);// 表格宽度为页面宽度的 100%
@@ -75,7 +75,7 @@ public class FundDetailsPDFGenerator extends PdfPageEventHelper {
         float left = document.left();
         float right = document.right();
         float bottom = document.bottom() - footHeight;
-        float top = document.bottom() + footHeight - footHeight;; // 根据字体大小设置顶部坐标
+        float top = document.bottom();; // 根据字体大小设置顶部坐标
 
         ColumnText footerText = new ColumnText(cb);
         footerText.setSimpleColumn(left, bottom, right, top);
@@ -89,7 +89,7 @@ public class FundDetailsPDFGenerator extends PdfPageEventHelper {
                 centerPosition, document.bottom() - paragraphFont.getSize() - footHeight, 0);
 
         // 添加总页数画布到指定位置
-        cb.addTemplate(totalPage, centerPosition, document.bottom() - paragraphFont.getSize() - offSetY - footHeight);
+        cb.addTemplate(totalPage, centerPosition, document.bottom() - paragraphFont.getSize() - totalPageOffSet_Y - footHeight);
 
         try {
             AbstractOpenPdfUtils.sealOnPdf(writer, document, sealPath);
@@ -103,7 +103,7 @@ public class FundDetailsPDFGenerator extends PdfPageEventHelper {
         // 文档关闭时调用，显示总页数
         totalPage.beginText();
         totalPage.setFontAndSize(baseFont, paragraphFont.getSize());
-        totalPage.setTextMatrix(0, offSetY);
+        totalPage.setTextMatrix(0, totalPageOffSet_Y);
         String totalPageString = "共" + (writer.getPageNumber() - 1) + "页";
         totalPage.showText(totalPageString);
         totalPage.endText();
