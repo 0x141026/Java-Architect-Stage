@@ -30,7 +30,7 @@ public class Test {
         // 指定文件保存的路径
         String directoryPath = System.getProperty("java.io.tmpdir") + "capitalDetail_generatedPdf" + System.currentTimeMillis();
         String filePath = directoryPath + File.separator + "资金明细详情1.pdf";
-
+        System.out.println(filePath);
         File directory = new File(directoryPath);
         if (!directory.exists()) {
             boolean created = directory.mkdirs();
@@ -55,6 +55,7 @@ public class Test {
             FundDetailsPDFGenerator event = new FundDetailsPDFGenerator(baseFont, paragraphFont, footHeight, footStr, sealPicPath);
             PdfWriter writer = PdfWriter.getInstance(document, fos);
             writer.setPageEvent(event);
+            writer.setEncryption("1".getBytes(), "1".getBytes(), PdfWriter.ALLOW_PRINTING, PdfWriter.ENCRYPTION_AES_128);
             document.open();
 
             // 添加标题
