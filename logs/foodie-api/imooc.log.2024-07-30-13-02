@@ -1,0 +1,2 @@
+2024-07-30 13:02:01 INFO  ServiceLogAspect:43 - ====== 开始执行 class com.imooc.service.impl.center.CenterUserServiceImpl.queryUserInfo ======
+2024-07-30 13:02:01 INFO  ServiceLogAspect:62 - ====== 执行结束，耗时：81 毫秒 ======

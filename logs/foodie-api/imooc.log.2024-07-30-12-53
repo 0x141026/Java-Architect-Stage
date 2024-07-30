@@ -1,0 +1,2 @@
+2024-07-30 12:53:32 WARN  DefaultHandlerExceptionResolver:207 - Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'POST' not supported]
+2024-07-30 12:53:51 WARN  DefaultHandlerExceptionResolver:207 - Resolved [org.springframework.web.bind.MissingServletRequestParameterException: Required request parameter 'userId' for method parameter type String is not present]

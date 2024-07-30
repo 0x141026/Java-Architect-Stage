@@ -55,7 +55,7 @@ public class Test {
             FundDetailsPDFGenerator event = new FundDetailsPDFGenerator(baseFont, paragraphFont, footHeight, footStr, sealPicPath);
             PdfWriter writer = PdfWriter.getInstance(document, fos);
             writer.setPageEvent(event);
-            writer.setEncryption("1".getBytes(), "1".getBytes(), PdfWriter.ALLOW_PRINTING, PdfWriter.ENCRYPTION_AES_128);
+//            writer.setEncryption(null, "1".getBytes(), PdfWriter.ALLOW_PRINTING, PdfWriter.ENCRYPTION_AES_128);
             document.open();
 
             // 添加标题

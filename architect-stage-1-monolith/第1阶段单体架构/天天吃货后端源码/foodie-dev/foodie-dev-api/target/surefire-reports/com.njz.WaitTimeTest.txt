@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.njz.WaitTimeTest
+-------------------------------------------------------------------------------
+Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 15.185 s - in com.njz.WaitTimeTest

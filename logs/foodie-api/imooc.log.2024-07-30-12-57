@@ -1,0 +1,25 @@
+2024-07-30 12:57:00 INFO  HikariDataSource:350 - DateSourceHikariCP - Shutdown initiated...
+2024-07-30 12:57:00 INFO  HikariDataSource:352 - DateSourceHikariCP - Shutdown completed.
+2024-07-30 12:57:05 INFO  Version:21 - HV000001: Hibernate Validator 6.0.16.Final
+2024-07-30 12:57:05 INFO  Application:55 - Starting Application using Java 1.8.0_291 on jianzhoudeMacBook-Pro.local with PID 38062 (/Users/jianzhounie/GitHub/Java-Architect-Stage/architect-stage-1-monolith/第1阶段单体架构/天天吃货后端源码/foodie-dev/foodie-dev-api/target/classes started by jianzhounie in /Users/jianzhounie/GitHub/Java-Architect-Stage)
+2024-07-30 12:57:05 INFO  Application:663 - The following profiles are active: dev,actuator
+2024-07-30 12:57:07 WARN  ClassPathMapperScanner:44 - No MyBatis mapper was found in '[com.imooc]' package. Please check your configuration.
+2024-07-30 12:57:07 INFO  TomcatWebServer:108 - Tomcat initialized with port(s): 8088 (http)
+2024-07-30 12:57:07 INFO  ServletWebServerApplicationContext:290 - Root WebApplicationContext: initialization completed in 2337 ms
+2024-07-30 12:57:08 WARN  AnnotationConfigServletWebServerApplicationContext:591 - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'orderJob': Unsatisfied dependency expressed through field 'orderService'; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'orderServiceImpl': Unsatisfied dependency expressed through field 'ordersMapper'; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'ordersMapper' defined in file [/Users/jianzhounie/GitHub/Java-Architect-Stage/architect-stage-1-monolith/第1阶段单体架构/天天吃货后端源码/foodie-dev/foodie-dev-mapper/target/classes/com/imooc/mapper/OrdersMapper.class]: Unsatisfied dependency expressed through bean property 'sqlSessionFactory'; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'tk.mybatis.mapper.autoconfigure.MapperAutoConfiguration': Unsatisfied dependency expressed through constructor parameter 0; nested exception is org.springframework.boot.context.properties.ConfigurationPropertiesBindException: Error creating bean with name 'mybatis-tk.mybatis.mapper.autoconfigure.MybatisProperties': Could not bind properties to 'MybatisProperties' : prefix=mybatis, ignoreInvalidFields=false, ignoreUnknownFields=true; nested exception is org.springframework.boot.context.properties.bind.BindException: Failed to bind properties under 'mybatis.configuration' to org.apache.ibatis.session.Configuration
+2024-07-30 12:57:08 ERROR LoggingFailureAnalysisReporter:40 - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Failed to bind properties under 'mybatis.configuration' to org.apache.ibatis.session.Configuration:
+
+    Reason: org.springframework.core.convert.ConverterNotFoundException: No converter found capable of converting from type [java.lang.String] to type [@org.springframework.boot.context.properties.NestedConfigurationProperty org.apache.ibatis.session.Configuration]
+
+Action:
+
+Update your application's configuration
+

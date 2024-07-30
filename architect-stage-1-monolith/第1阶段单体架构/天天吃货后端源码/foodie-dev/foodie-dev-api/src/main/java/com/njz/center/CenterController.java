@@ -1,5 +1,6 @@
 package com.njz.center;
 
+import com.imooc.mapper.UsersMapperPlus;
 import com.imooc.pojo.Users;
 import com.imooc.service.center.CenterUserService;
 import com.imooc.utils.IMOOCJSONResult;
@@ -19,6 +20,8 @@ public class CenterController {
 
     @Autowired
     private CenterUserService centerUserService;
+    @Autowired
+    private UsersMapperPlus usersMapperPlus;
 
     @ApiOperation(value = "获取用户信息", notes = "获取用户信息", httpMethod = "GET")
     @GetMapping("userInfo")
@@ -26,7 +29,9 @@ public class CenterController {
             @ApiParam(name = "userId", value = "用户id", required = true)
             @RequestParam String userId) {
 
-        Users user = centerUserService.queryUserInfo(userId);
+//        Users user = centerUserService.queryUserInfo(userId);
+//        Users user = usersMapperPlus.selectById(userId);
+        Users user = usersMapperPlus.getPO(userId);
         return IMOOCJSONResult.ok(user);
     }
 

@@ -1,0 +1,57 @@
+2024-07-30 14:45:01 INFO  Version:21 - HV000001: Hibernate Validator 6.0.16.Final
+2024-07-30 14:45:01 INFO  Application:55 - Starting Application using Java 1.8.0_291 on jianzhoudeMacBook-Pro.local with PID 40964 (/Users/jianzhounie/GitHub/Java-Architect-Stage/architect-stage-1-monolith/第1阶段单体架构/天天吃货后端源码/foodie-dev/foodie-dev-api/target/classes started by jianzhounie in /Users/jianzhounie/GitHub/Java-Architect-Stage)
+2024-07-30 14:45:01 INFO  Application:663 - The following profiles are active: dev,actuator
+2024-07-30 14:45:02 WARN  ClassPathMapperScanner:44 - No MyBatis mapper was found in '[com.imooc]' package. Please check your configuration.
+2024-07-30 14:45:03 INFO  TomcatWebServer:108 - Tomcat initialized with port(s): 8088 (http)
+2024-07-30 14:45:03 INFO  ServletWebServerApplicationContext:290 - Root WebApplicationContext: initialization completed in 2562 ms
+2024-07-30 14:45:04 WARN  AnnotationConfigServletWebServerApplicationContext:591 - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'orderJob': Unsatisfied dependency expressed through field 'orderService'; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'orderServiceImpl': Unsatisfied dependency expressed through field 'ordersMapper'; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'ordersMapper' defined in file [/Users/jianzhounie/GitHub/Java-Architect-Stage/architect-stage-1-monolith/第1阶段单体架构/天天吃货后端源码/foodie-dev/foodie-dev-mapper/target/classes/com/imooc/mapper/OrdersMapper.class]: Unsatisfied dependency expressed through bean property 'sqlSessionFactory'; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'sqlSessionFactory' defined in class path resource [com/baomidou/mybatisplus/autoconfigure/MybatisPlusAutoConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.apache.ibatis.session.SqlSessionFactory]: Factory method 'sqlSessionFactory' threw exception; nested exception is java.lang.NoSuchMethodError: org.apache.ibatis.parsing.XNode.getStringAttribute(Ljava/lang/String;Ljava/util/function/Supplier;)Ljava/lang/String;
+2024-07-30 14:45:04 ERROR LoggingFailureAnalysisReporter:40 - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+An attempt was made to call a method that does not exist. The attempt was made from the following location:
+
+    com.baomidou.mybatisplus.core.MybatisXMLMapperBuilder.buildResultMappingFromContext(MybatisXMLMapperBuilder.java:348)
+
+The following method did not exist:
+
+    org.apache.ibatis.parsing.XNode.getStringAttribute(Ljava/lang/String;Ljava/util/function/Supplier;)Ljava/lang/String;
+
+The method's class, org.apache.ibatis.parsing.XNode, is available from the following locations:
+
+    jar:file:/Users/jianzhounie/.m2/repository/org/mybatis/mybatis/3.5.2/mybatis-3.5.2.jar!/org/apache/ibatis/parsing/XNode.class
+
+The class hierarchy was loaded from the following locations:
+
+    org.apache.ibatis.parsing.XNode: file:/Users/jianzhounie/.m2/repository/org/mybatis/mybatis/3.5.2/mybatis-3.5.2.jar
+
+
+Action:
+
+Correct the classpath of your application so that it contains a single, compatible version of org.apache.ibatis.parsing.XNode
+
+2024-07-30 14:45:45 INFO  Version:21 - HV000001: Hibernate Validator 6.0.16.Final
+2024-07-30 14:45:45 INFO  Application:55 - Starting Application using Java 1.8.0_291 on jianzhoudeMacBook-Pro.local with PID 41016 (/Users/jianzhounie/GitHub/Java-Architect-Stage/architect-stage-1-monolith/第1阶段单体架构/天天吃货后端源码/foodie-dev/foodie-dev-api/target/classes started by jianzhounie in /Users/jianzhounie/GitHub/Java-Architect-Stage)
+2024-07-30 14:45:45 INFO  Application:663 - The following profiles are active: dev,actuator
+2024-07-30 14:45:47 WARN  ClassPathMapperScanner:44 - No MyBatis mapper was found in '[com.imooc]' package. Please check your configuration.
+2024-07-30 14:45:47 INFO  TomcatWebServer:108 - Tomcat initialized with port(s): 8088 (http)
+2024-07-30 14:45:47 INFO  ServletWebServerApplicationContext:290 - Root WebApplicationContext: initialization completed in 2471 ms
+2024-07-30 14:45:50 INFO  EndpointLinksResolver:58 - Exposing 14 endpoint(s) beneath base path '/actuator'
+2024-07-30 14:45:50 INFO  MapperCacheDisabler:60 - Clear tk.mybatis.mapper.util.MsUtil CLASS_CACHE cache.
+2024-07-30 14:45:50 INFO  MapperCacheDisabler:60 - Clear tk.mybatis.mapper.genid.GenIdUtil CACHE cache.
+2024-07-30 14:45:50 INFO  MapperCacheDisabler:60 - Clear tk.mybatis.mapper.version.VersionUtil CACHE cache.
+2024-07-30 14:45:50 INFO  MapperCacheDisabler:83 - Clear EntityHelper entityTableMap cache.
+2024-07-30 14:45:51 INFO  TomcatWebServer:220 - Tomcat started on port(s): 8088 (http) with context path ''
+2024-07-30 14:45:51 INFO  DocumentationPluginsBootstrapper:84 - Context refreshed
+2024-07-30 14:45:51 INFO  DocumentationPluginsBootstrapper:87 - Found 1 custom documentation plugin(s)
+2024-07-30 14:45:51 INFO  ApiListingReferenceScanner:44 - Scanning for api listing references
+2024-07-30 14:45:51 INFO  CachingOperationNameGenerator:40 - Generating unique operation named: addUsingPOST_1
+2024-07-30 14:45:51 INFO  Application:61 - Started Application in 6.656 seconds (JVM running for 7.614)
+2024-07-30 14:45:51 INFO  DispatcherServlet:525 - Initializing Servlet 'dispatcherServlet'
+2024-07-30 14:45:51 INFO  HikariDataSource:110 - DateSourceHikariCP - Starting...
+2024-07-30 14:45:51 INFO  DispatcherServlet:547 - Completed initialization in 3 ms
+2024-07-30 14:45:52 INFO  HikariDataSource:123 - DateSourceHikariCP - Start completed.
