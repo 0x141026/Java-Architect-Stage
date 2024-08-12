@@ -1,0 +1,7 @@
+com\bfxy\collector\util\InputMDC.class
+com\bfxy\collector\util\NetUtil.class
+com\bfxy\collector\util\FastJsonConvertUtil.class
+com\bfxy\collector\Application.class
+com\bfxy\collector\entity\AccurateWatcherMessage.class
+com\bfxy\collector\web\IndexController.class
+com\bfxy\collector\web\WatcherController.class

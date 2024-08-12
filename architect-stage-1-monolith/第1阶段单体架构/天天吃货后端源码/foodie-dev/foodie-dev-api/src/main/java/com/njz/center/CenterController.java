@@ -31,7 +31,7 @@ public class CenterController {
 
 //        Users user = centerUserService.queryUserInfo(userId);
 //        Users user = usersMapperPlus.selectById(userId);
-        Users user = usersMapperPlus.getPO(userId);
+        Users user = usersMapperPlus.getUserByXML(userId);
         return IMOOCJSONResult.ok(user);
     }
 

@@ -11,4 +11,7 @@ import org.apache.ibatis.annotations.Select;
 public interface UsersMapperPlus extends BaseMapper<Users> {
     @Select("select * from users where id=#{id}")
     Users getPO(@Param("id") String id);
+
+    Users getUserByXML(@Param("id") String id);
+
 }
